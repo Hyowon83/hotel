@@ -60,10 +60,6 @@ public class HomeController {
 		} else {
 			return "choose";
 		}
-//		String uid = hsr.getParameter("userid");
-//		String addr = hsr.getParameter("address");
-//		model.addAttribute("loginid", uid);
-//		model.addAttribute("region", addr);
 	}
 	
 	@RequestMapping(value="/check_user")
