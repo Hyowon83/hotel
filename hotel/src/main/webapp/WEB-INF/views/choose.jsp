@@ -25,7 +25,7 @@
               <h4 class="my-0 fw-normal">선택해주세요</h4>
             </div>
             <div class="card-body">
-			<form method = "get" action = "/app/tologin">
+			<form method = "get" action = "/app/">
 				<button type = submit onclick="location.href='selected?path=login'" class="btn btn-lg btn-warning">로그인</button>
 				<button type = button onclick="location.href='selected?path=newbie'" class="btn btn-lg btn-warning">회원가입</button>
 			</form>

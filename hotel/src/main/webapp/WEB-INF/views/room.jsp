@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -44,76 +45,20 @@
               <h4 class="my-0 fw-normal">객실리스트</h4>
             </div>
             <div class="list-group list-group-flush border-bottom scrollarea" id="roomList">
-                <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" id="baekdu">
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <h5 class="fw-bold mb-1">백두산</h5>
-                    <small>4인</small>
-                  </div>
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <div class="small" style="float:left">패밀리룸</div>
-                    <small>1박 65,000</small>
-                </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" id="hanla">
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <h5 class="fw-bold mb-1">한라산</h5>
-                    <small>2인</small>
-                  </div>
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <div class="small" style="float:left">스위트룸</div>
-                    <small>1박 45,000</small>
-                </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" id="jiri">
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <h5 class="fw-bold mb-1">지리산</h5>
-                    <small>4인</small>
-                  </div>
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                      <div class="small" style="float:left">이벤트룸</div>
-                      <small>1박 60,000</small>
-                  </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" id="baebang">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                      <h5 class="fw-bold mb-1">배방산</h5>
-                      <small>2인</small>
-                    </div>
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <div class="small" style="float:left">특실</div>
-                        <small>1박 50,000</small>
-                    </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" id="gwangduk">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                      <h5 class="fw-bold mb-1">광덕산</h5>
-                      <small>2인</small>
-                    </div>
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <div class="small" style="float:left">특실</div>
-                        <small>1박 50,000</small>
-                    </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" id="seonggeo">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                      <h5 class="fw-bold mb-1">성거산</h5>
-                      <small>2인</small>
-                    </div>
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <div class="small" style="float:left">일반실</div>
-                        <small>1박 40,000</small>
-                    </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" id="taejo">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                      <h5 class="fw-bold mb-1">태조산</h5>
-                      <small>2인</small>
-                    </div>
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <div class="small" style="float:left">특실</div>
-                        <small>1박 50,000</small>
-                    </div>
-                </a>
+
+			  	<c:forEach items = "${list}" var = "room">
+			  		<a href="#" class="list-group-item list-group-item-action py-3 lh-tight" id="baekdu">
+	                  <div class="d-flex w-100 align-items-center justify-content-between">
+	                    <h5 class="fw-bold mb-1">${room.name}</h5>
+	                    <small>${room.howmany}인</small>
+	                  </div>
+	                  <div class="d-flex w-100 align-items-center justify-content-between">
+	                    <div class="small" style="float:left">${room.type}</div>
+	                    <small>1박 ${room.howmuch}</small>
+	                  </div>
+                	</a>
+				</c:forEach>
+
             </div>
           </div>
         </div>

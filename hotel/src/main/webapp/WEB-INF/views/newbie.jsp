@@ -25,17 +25,18 @@
               <h4 class="my-0 fw-normal">회원가입</h4>
             </div>
             <div class="card-body">
-			<form method = "post" action = "/app/checknewbie">
-                <label for="roomName" style="float:left">USERNAME</label>
+			<form method = "post" action = "/app/">
+                <label for="username" style="float:left">USERNAME</label>
                 <input class="form-control mb-3" type="text" name="username">
-                <label for="roomName" style="float:left">USERID</label>
+                <label for="userid" style="float:left">USERID</label>
                 <input class="form-control mb-3" type="text" name="userid">
-                <label for="roomName" style="float:left">PASSWORD</label>
+                <label for="userpw" style="float:left">PASSWORD</label>
                 <input class="form-control mb-3" type="password" name="userpw">
-                <label for="roomName" style="float:left">checkPASSWORD</label>
+                <label for="checkpw" style="float:left">checkPASSWORD</label>
                 <input class="form-control mb-3" type="password" name="checkpw">
 				<button type = submit onclick="location.href='newbie?path=login'" class="btn btn-lg btn-warning">회원가입</button>
-				<button type = button onclick="location.href='newbie?path=choose'" class="btn btn-lg btn-warning">취소</button>
+				<button type = button onclick="location.href='/app/'" class="btn btn-lg btn-warning">돌아가기</button>
+				<button type = reset class="btn btn-lg btn-danger">취소</button>
 			</form>
             </div>
           </div>

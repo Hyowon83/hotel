@@ -31,7 +31,8 @@
                 <label for="roomName" style="float:left">PASSWORD</label>
                 <input class="form-control mb-3" type="password" name="userpw">
 				<button type = submit onclick="location.href='login?path=login'" class="btn btn-lg btn-warning">로그인</button>
-				<button type = button onclick="location.href='login?path=choose'" class="btn btn-lg btn-warning">취소</button>
+				<button type = button onclick="location.href='login?path=newbie'" class="btn btn-lg btn-warning">회원가입</button>
+				<button type = reset class="btn btn-lg btn-danger">취소</button>
 			</form>
             </div>
           </div>

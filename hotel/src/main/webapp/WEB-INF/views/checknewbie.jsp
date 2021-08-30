@@ -25,7 +25,7 @@
               <h4 class="my-0 fw-normal">회원가입 확인</h4>
             </div>
             <div class="card-body">
-			<form method = "post" action = "/app/tologin">
+			<form method = "post" action = "/app/">
                 <label for="roomName" style="float:left">USERNAME</label>
                 <input class="form-control mb-3" type="text" name="username" value="${name}" readonly>
                 <label for="roomName" style="float:left">USERID</label>
