@@ -3,7 +3,7 @@
 <%
    String loginid=(String)session.getAttribute("loginid");
    if(!loginid.equals("hyowon83")){
-      response.sendRedirect("http://localhost:8080/app/tologin");
+      response.sendRedirect("http://localhost:8080/app/");
    }
 %>
 <!DOCTYPE html>
