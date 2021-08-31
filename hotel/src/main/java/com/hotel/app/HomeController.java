@@ -78,9 +78,14 @@ public class HomeController {
 		}
 		//여기서 interface 호출, 결과를 room.jsp에 전달
 		iRoom room = sqlSession.getMapper(iRoom.class);
+		//객실 정보
 		ArrayList<Roominfo> roominfo = room.getRoomList();
 		System.out.println(roominfo);
 		model.addAttribute("list", roominfo);
+		//객실 타입
+		ArrayList<Roomtype> roomtype = room.getRoomType();
+		System.out.println(roomtype);
+		model.addAttribute("type", roomtype);
 		return "room";
 	}
 
