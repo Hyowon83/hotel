@@ -5,6 +5,10 @@
 	
 <mapper namespace="com.hotel.app.iRoom">
 	<select id = "getRoomList" resultType="com.hotel.app.Roominfo">
-		SELECT ROOMCODE, NAME, TYPE, HOWMANY, HOWMUCH FROM ROOM ORDER BY NAME
+		SELECT A.ROOMCODE, A.NAME ROOMNAME, B.NAME TYPENAME, A.TYPE, A.HOWMANY, A.HOWMUCH FROM ROOM A, ROOMTYPE B WHERE A.TYPE = B.TYPECODE ORDER BY ROOMNAME
+	</select>
+	
+	<select id = "getRoomType" resultType="com.hotel.app.Roomtype">
+		SELECT TYPECODE, NAME FROM ROOMTYPE ORDER BY NAME
 	</select>
 </mapper>
