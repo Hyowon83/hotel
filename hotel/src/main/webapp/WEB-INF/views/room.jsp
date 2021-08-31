@@ -108,10 +108,9 @@
   </body>
   <script>
     $(document).ready(function() {
+        var listItems = $(".list-group-item"); //Select all list items
 	    $(".list-group-item").click(function(){
 	
-	        var listItems = $(".list-group-item"); //Select all list items
-	     
 	        //Remove 'active' tag for all list items
 	        for (let i = 0; i < listItems.length; i++) {                    
 	           listItems[i].classList.remove("active");
@@ -128,6 +127,10 @@
 	        $('#roomGuest').val('');
 	        $('#roomPrice').val('');
 	        $("select option").prop("selected", false);
+	        for (let i = 0; i < listItems.length; i++) {                    
+		           listItems[i].classList.remove("active");
+		           listItems[i].classList.remove("bg-warning");
+		    }
 	    })
     })
     
