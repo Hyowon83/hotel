@@ -44,16 +44,17 @@
             <div class="card-header py-3">
               <h4 class="my-0 fw-normal">객실리스트</h4>
             </div>
-            <div class="list-group list-group-flush border-bottom scrollarea" id="roomList">
+            <div class="list-group list-group-flush border-bottom scrollarea" id="btn_room">
 
-			  	<c:forEach items = "${list}" var = "room">
-			  		<a href="#" class="list-group-item list-group-item-action py-3 lh-tight" id="baekdu">
+			  	<c:forEach items = "${list}" var = "room" varStatus = "num">
+                  <input type="hidden" id="${num.index}" value="${room.roomname},${room.type},${room.howmany},${room.howmuch}">
+			  		<a href="#" class="list-group-item list-group-item-action py-3 lh-tight" onclick="getIndex(${num.index})" value="${room.roomcode}">
 	                  <div class="d-flex w-100 align-items-center justify-content-between">
-	                    <h5 class="fw-bold mb-1">${room.name}</h5>
+	                    <h5 class="fw-bold mb-1">${room.roomname}</h5>
 	                    <small>${room.howmany}인</small>
 	                  </div>
 	                  <div class="d-flex w-100 align-items-center justify-content-between">
-	                    <div class="small" style="float:left">${room.type}</div>
+	                    <div class="small" style="float:left">${room.typename}</div>
 	                    <small>1박 ${room.howmuch}</small>
 	                  </div>
                 	</a>
@@ -70,13 +71,12 @@
             <div class="card-body">
                 <label for="roomName" style="float:left">객실 이름</label>
                 <input class="form-control mb-3" type="text" name="roomName" id="roomName">
+                <input type="hidden" id="roodcode">
                 <label for="roomli" style="float:left">객실 종류</label>
                 <select class="form-select mb-3" size="5" id="roomli">
-                    <option value="family">패밀리룸</option>
-                    <option value="suite">스위트룸</option>
-                    <option value="event">이벤트룸</option>
-                    <option value="special">특실</option>
-                    <option value="common">일반실</option>
+                	<c:forEach items = "${type}" var = "rtype">
+			  		<option value="${rtype.typecode}">${rtype.name}</option>
+					</c:forEach>
                 </select>
                 <label for="roomGuest" style="float:left">인원제한</label>
                 <div class="input-group mb-3">
@@ -107,96 +107,37 @@
       </div>
   </body>
   <script>
-    $(".list-group-item").click(function(){
-
-        var listItems = $(".list-group-item"); //Select all list items
-     
-        //Remove 'active' tag for all list items
-        for (let i = 0; i < listItems.length; i++) {                    
-           listItems[i].classList.remove("active");
-           listItems[i].classList.remove("bg-warning");
-        }
-     
-        //Add 'active' tag for currently selected item
-        this.classList.add("active");
-        this.classList.add("bg-warning");
-     });
-//     function setRoom(roomN, roomL, roomG, roomP) {
-//        $('#roomName').val(roomN);
-//        $('#roomli').val(roomL).attr("selected", "selected");
-//        $('#roomGuest').val(roomG);
-//        $('#roomPrice').val(roomP);
-//      }
-      function getRoom(roomN, roomL, roomG, roomP) {
-        $('#roomName').val(roomN);
-        $('#roomli').val(roomL).attr("selected", "selected");
-        $('#roomGuest').val(roomG);
-        $('#roomPrice').val(roomP);
-      }
-      function setBtnId(roomId) {
-        $(document)
-        .on('click', roomId, function() {
-        roomN = $('#roomName').val();
-        roomL = $('#roomli').val();
-        roomG = $('#roomGuest').val();
-        roomP = $('#roomPrice').val();
-        getRoom(roomIn, roomN, roomL, roomG, roomP);
-      })
-      }
-    $(document)
-//    .on('click', '#btnCreate', function() {
-//      roomN = $('#roomName').val();
-//      roomL = $('#roomli').val();
-//      roomG = $('#roomGuest').val();
-//      roomP = $('#roomPrice').val();
-//    })
-    .on('click', '#baekdu', function() {
-        $('#roomName').val("백두산");
-        $('#roomli').val('family');
-        $('#roomGuest').val("4");
-        $('#roomPrice').val(65000);
+    $(document).ready(function() {
+	    $(".list-group-item").click(function(){
+	
+	        var listItems = $(".list-group-item"); //Select all list items
+	     
+	        //Remove 'active' tag for all list items
+	        for (let i = 0; i < listItems.length; i++) {                    
+	           listItems[i].classList.remove("active");
+	           listItems[i].classList.remove("bg-warning");
+	        }
+	     
+	        //Add 'active' tag for currently selected item
+	        this.classList.add("active");
+	        this.classList.add("bg-warning");
+	     });
+    	
+	    $('#btnClear').click(function() {
+	        $('#roomName').val('');
+	        $('#roomGuest').val('');
+	        $('#roomPrice').val('');
+	        $("select option").prop("selected", false);
+	    })
     })
-    .on('click', '#hanla', function() {
-        $('#roomName').val("한라산");
-        $('#roomli').val('suite');
-        $('#roomGuest').val("2");
-        $('#roomPrice').val(45000);
-    })
-    .on('click', '#jiri', function() {
-        $('#roomName').val("지리산");
-        $('#roomli').val('event');
-        $('#roomGuest').val("4");
-        $('#roomPrice').val(60000);
-    })
-    .on('click', '#baebang', function() {
-        $('#roomName').val("배방산");
-        $('#roomli').val('special');
-        $('#roomGuest').val("2");
-        $('#roomPrice').val(50000);
-    })
-    .on('click', '#gwangduk', function() {
-        $('#roomName').val("광덕산");
-        $('#roomli').val('special');
-        $('#roomGuest').val("2");
-        $('#roomPrice').val(50000);
-    })
-    .on('click', '#seonggeo', function() {
-        $('#roomName').val("성거산");
-        $('#roomli').val('common');
-        $('#roomGuest').val("2");
-        $('#roomPrice').val(40000);
-    })
-    .on('click', '#taejo', function() {
-        $('#roomName').val("태조산");
-        $('#roomli').val('special');
-        $('#roomGuest').val("2");
-        $('#roomPrice').val(50000);
-    })
-    .on('click', '#btnClear', function() {
-        $('#roomName').val('');
-        $('#roomGuest').val('');
-        $('#roomPrice').val('');
-        $("select option").prop("selected", false);
-    })
+    
+    function getIndex(num) {
+    	let str = $('#'+num).val();
+		let arr = str.split(",");
+        $('#roomName').val(arr[0]);
+        $('#roomli').val(arr[1]);
+        $('#roomGuest').val(arr[2]);
+        $('#roomPrice').val(arr[3]);
+	}
   </script>
 </html>
