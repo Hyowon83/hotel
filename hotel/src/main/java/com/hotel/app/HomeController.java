@@ -1,6 +1,7 @@
 package com.hotel.app;
 
 import java.util.ArrayList;
+
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  * Handles requests for the application home page.
@@ -79,9 +83,9 @@ public class HomeController {
 		//여기서 interface 호출, 결과를 room.jsp에 전달
 		iRoom room = sqlSession.getMapper(iRoom.class);
 		//객실 정보
-		ArrayList<Roominfo> roominfo = room.getRoomList();
-		System.out.println(roominfo);
-		model.addAttribute("list", roominfo);
+//		ArrayList<Roominfo> roominfo = room.getRoomList();
+//		System.out.println(roominfo);
+//		model.addAttribute("list", roominfo);
 		//객실 타입
 		ArrayList<Roomtype> roomtype = room.getRoomType();
 		System.out.println(roomtype);
@@ -96,4 +100,55 @@ public class HomeController {
 		return "redirect:/";
 	}
 	
+	@RequestMapping(value = "/getRoomList", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String getRoomList(HttpServletRequest hsr) {
+		iRoom room = sqlSession.getMapper(iRoom.class);
+		ArrayList<Roominfo> roominfo = room.getRoomList();
+		//찾아온 데이터로 JSONArray만들기
+		JSONArray ja = new JSONArray();
+		for(int i = 0; i < roominfo.size(); i++) {
+			JSONObject jo = new JSONObject();
+			jo.put("roomcode", roominfo.get(i).getRoomcode());
+			jo.put("roomname", roominfo.get(i).getRoomname());
+			jo.put("typename", roominfo.get(i).getTypename());
+			jo.put("type", roominfo.get(i).getType());
+			jo.put("howmany", roominfo.get(i).getHowmany());
+			jo.put("howmuch", roominfo.get(i).getHowmuch());
+			ja.add(jo);
+		}
+		System.out.println(ja.toString());
+		return ja.toString();
+	}
+	@RequestMapping(value = "/deleteRoom", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String deleteRoom(HttpServletRequest hsr) {
+		int roomcode = Integer.parseInt(hsr.getParameter("roomcode"));
+		iRoom room = sqlSession.getMapper(iRoom.class);
+		room.doDeleteRoom(roomcode);
+		return "ok";
+	}
+	@RequestMapping(value = "/addRoom", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String addRoom(HttpServletRequest hsr) {
+		String rname = hsr.getParameter("roomname");
+		int rtype = Integer.parseInt(hsr.getParameter("roomtype"));
+		int howmany = Integer.parseInt(hsr.getParameter("howmany"));
+		int howmuch = Integer.parseInt(hsr.getParameter("howmuch"));
+		iRoom room = sqlSession.getMapper(iRoom.class);
+		room.doAddRoom(rname, rtype, howmany, howmuch);
+		return "ok";
+	}
+	@RequestMapping(value = "/updateRoom", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String updateRoom(HttpServletRequest hsr) {
+		int rcode = Integer.parseInt(hsr.getParameter("roomcode"));
+		String rname = hsr.getParameter("roomname");
+		int rtype = Integer.parseInt(hsr.getParameter("roomtype"));
+		int howmany = Integer.parseInt(hsr.getParameter("howmany"));
+		int howmuch = Integer.parseInt(hsr.getParameter("howmuch"));
+		iRoom room = sqlSession.getMapper(iRoom.class);
+		room.doUpdateRoom(rcode, rname, rtype, howmany, howmuch);
+		return "ok";
+	}
 }
