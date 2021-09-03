@@ -30,7 +30,7 @@
                 <input class="form-control mb-3" type="text" name="userid">
                 <label for="roomName" style="float:left">PASSWORD</label>
                 <input class="form-control mb-3" type="password" name="userpw">
-				<button type = submit onclick="location.href='login?path=login'" class="btn btn-lg btn-warning">로그인</button>
+				<button type = submit id="submitlogin" class="btn btn-lg btn-warning">로그인</button>
 				<button type = button onclick="location.href='login?path=newbie'" class="btn btn-lg btn-warning">회원가입</button>
 				<button type = reset class="btn btn-lg btn-danger">취소</button>
 			</form>
@@ -39,4 +39,25 @@
         </div>
       </div>
 </body>
+<script>
+$(document).ready(function() {
+	
+	$("#submitlogin").click(function() {
+		let pstr = $.trim($("input[name=userid]").val());
+		$("input[name=userid]").val(pstr);
+		pstr = $.trim($("input[name=userpw]").val());
+		$("input[name=userpw]").val(pstr);
+		if($("input[name=userid]").val() == "") {
+			alert("아이디를 입력하세요.");
+			return false;
+		}
+		if($("input[name=userpw]").val() == "") {
+			alert("비밀번호를 입력하세요.");
+			return false;
+		}
+		return true;
+	})
+	
+})
+</script>
 </html>
