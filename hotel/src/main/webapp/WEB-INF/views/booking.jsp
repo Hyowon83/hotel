@@ -118,17 +118,7 @@
                 <input class="form-control mb-3" type="text" name="roomtype" id="roomtype" value="" readonly>
                 <label for="roomGuest" style="float:left">숙박인원</label>
                 <div class="input-group mb-3">
-                    <input type="number" class="form-control" id="roomGuest" value="" readonly>
-                    <button class="input-group-text" id="guestUp">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
-                        </svg>
-                    </button>
-                    <button class="input-group-text" id="guestDown">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"></path>
-                        </svg>
-                    </button>
+                    <input type="number" class="form-control" id="roomGuest" value="" min="1" max="">
                 </div>
                 <label for="roomDay" style="float:left">숙박 기간</label>
                 <div class="input-group mb-1">
@@ -164,7 +154,7 @@
               </div>
               <div class="list-group list-group-flush border-bottom scrollarea">
                 <c:forEach items = "${book}" var = "book" varStatus = "num">
-                  <option id="${num.index}" value="${book.roomcode}" style="display:none;">${book.roomname},${book.typename},${book.person},${book.howmuch},${book.checkin},${book.checkout},${book.mobile}</option>
+                  <option id="${num.index}" value="${book.roomcode}" style="display:none;">${book.roomname},${book.typename},${book.person},${book.howmuch},${book.checkin},${book.checkout},${book.mobile},${book.howmany}</option>
 			  		<a href="#" class="list-group-item list-group-item-action py-3 lh-tight" onclick="getIndex(${num.index})">
 	                  <div class="d-flex w-100 align-items-center justify-content-between">
 	                    <h5 class="fw-bold mb-1">${book.roomname}</h5>
@@ -185,16 +175,7 @@
   <script>
 	let date = 0;
 	let date2 = 0;
-	
-	function getToday(){
-		let today = new Date();
-	    var year = today.getFullYear();
-	    var month = ("0" + (1 + today.getMonth())).slice(-2);
-	    var day = ("0" + today.getDate()).slice(-2);
 
-	    return year + "-" + month + "-" + day;
-	}
-	
     $(document).ready(function() {
     	
     	$("#searchIn").click(function() {
@@ -247,6 +228,7 @@
 //	    	return false;
 //    	})
     })
+    
     $(".list-group-item").click(function(){
 
         var listItems = $(".list-group-item"); //Select all list items
@@ -261,14 +243,39 @@
         this.classList.add("active");
         this.classList.add("bg-warning");
      })
+     
+     $("#btn_book option").click(function() {
+    	 let str = $(this).text();
+    	 let arr = str.split(",");
+    	 $('#roomName').val(arr[0]);
+         $('#roomtype').val(arr[1]);
+         $('#roomGuest').val(1);
+         $('#roomGuest').attr('max', arr[2]);
+         $('#oneDay').text("1박 "+arr[3]+"원");
+         
+         $('#roomDateIn').val($("#searchIn").val());
+         $('#roomDateOut').val($("#searchOut").val());
+         
+ 		getDate($("#searchIn").val(),$("#searchOut").val());
+         let day = date2-date;
+         console.log(date,date2,day);
+         
+         $('#roomPriceDay').text(day+"박");
+         $('#roomPrice').val(parseInt(arr[3])*day);
+         
+     	let code = $(this).val();
+     	$('#roomcode').val(code);
+         return false;
+     })
     })
-    let oneday = "hi";
+
     function getIndex(num) {
     	let str = $('#'+num).text();
     	let arr = str.split(",");
     	$('#roomName').val(arr[0]);
         $('#roomtype').val(arr[1]);
         $('#roomGuest').val(arr[2]);
+        $('#roomGuest').attr('max', arr[7]);
         $('#oneDay').text("1박 "+arr[3]+"원");
         $('#roomDateIn').val(arr[4]);
         $('#roomDateOut').val(arr[5]);
@@ -292,5 +299,14 @@
     	date2 = b.replace(/\-/g,"");
     	date2 = parseInt(date2);
     }
+    
+	function getToday(){
+		let today = new Date();
+	    var year = today.getFullYear();
+	    var month = ("0" + (1 + today.getMonth())).slice(-2);
+	    var day = ("0" + today.getDate()).slice(-2);
+
+	    return year + "-" + month + "-" + day;
+	}
   </script>
 </html>
