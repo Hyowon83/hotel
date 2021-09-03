@@ -1,11 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-   String loginid=(String)session.getAttribute("loginid");
-   if(!loginid.equals("hyowon83")){
-      response.sendRedirect("http://localhost:8080/app/");
-   }
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -52,21 +47,19 @@
                 <div class="card-body">
                     <label for="roomDay" style="float:left">숙박 기간</label>
                     <div class="input-group mb-1">
-                        <input type="date" class="form-control">
-                        <span class="input-group-text" id="roomPrice">17:00~</span>
+                        <input type="date" class="form-control" id="searchIn">
+                        <span class="input-group-text">17:00~</span>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="date" class="form-control">
-                        <span class="input-group-text" id="roomPrice">~12:00</span>
+                        <input type="date" class="form-control" id="searchOut">
+                        <span class="input-group-text">~12:00</span>
                     </div>
                     <label for="roomli" style="float:left">객실 종류</label>
                     <select class="form-select" size="1" id="roomli">
                         <option value="">-종류선택-</option>
-                        <option value="family">패밀리룸</option>
-                        <option value="suite">스위트룸</option>
-                        <option value="event">이벤트룸</option>
-                        <option value="special">특실</option>
-                        <option value="common">일반실</option>
+                        <c:forEach items = "${type}" var = "rtype">
+				  			<option value="${rtype.typecode}">${rtype.name}</option>
+						</c:forEach>
                     </select><br />
                     
                     <button type="button" id="btnSearch" class="btn btn-lg btn-warning">검색</button>
@@ -78,6 +71,11 @@
                       <h4 class="my-0 fw-normal">검색된객실</h4>
                     </div>
                     <div class="list-group list-group-flush border-bottom scrollarea">
+                    <select id="btn_book" size="10">
+                    <c:forEach items = "${list}" var = "room" varStatus = "num">
+	                  <option id="${num.index}" value="${room.roomcode}">${room.roomname},${room.typename},${room.howmany},${room.howmuch}</option>
+					</c:forEach>
+                    </select>
                         <!-- <label class="mb-3 text-warning">검색된 객실이 없습니다.</label> -->
                         <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" id="baebang">
                             <div class="d-flex w-100 align-items-center justify-content-between">
@@ -134,12 +132,12 @@
                 </div>
                 <label for="roomDay" style="float:left">숙박 기간</label>
                 <div class="input-group mb-1">
-                      <input type="date" class="form-control">
-                      <span class="input-group-text" id="roomDateIn">17:00~</span>
+                      <input type="date" class="form-control" id="roomDateIn">
+                      <span class="input-group-text">17:00~</span>
                 </div>
                 <div class="input-group mb-3">
-                      <input type="date" class="form-control">
-                      <span class="input-group-text" id="roomDateOut">~12:00</span>
+                      <input type="date" class="form-control" id="roomDateOut">
+                      <span class="input-group-text">~12:00</span>
                 </div>
                 <div class="d-flex w-100 align-items-center justify-content-between">
                     <label for="roomPrice" style="float:left">총 숙박비용</label>
@@ -202,9 +200,40 @@
       </div>
   </body>
   <script>
+  	//alert($("#btn_book option").length);
     //let n=2;
     //$('#roomPriceDay').text(`${n}박`);
     //$('#oneDay').text(`1박 ${n}원`);
+    $(document).ready(function() {
+    	$("#btnSearch").click(function() {
+			if($("#btn_book option").length > 0) {
+		 		$.post("http://localhost:8080/app/deleteBooking1",{},function(result) {
+		  			if(result=="del"){
+		  				console.log(result);
+		   			location.reload();    				
+		  			}
+		   		}, 'text');    			
+			}
+			let checkin = $("#searchIn").val();
+			let checkout = $("#searchOut").val();
+			let typename = $("#roomli option:selected").text();
+    		console.log(checkin,checkout,typename);
+    		
+    		if(checkin == "" || checkout == ""){
+    			alert("날짜를 선택해주세요.");
+    		} else if(typename == "-종류선택-") {
+    			alert("객실 종류를 선택해주세요.");
+    		} else {
+    			$.post("http://localhost:8080/app/getAbleBookList",{typename:typename},function(result){
+    				if(result=="search"){
+        				console.log(result);
+    	    			location.reload();    
+        			}
+		    	}, 'text');	    			
+    		}
+	    	return false;
+    	})
+    })
     $(".list-group-item").click(function(){
 
         var listItems = $(".list-group-item"); //Select all list items
