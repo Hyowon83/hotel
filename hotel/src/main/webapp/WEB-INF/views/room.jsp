@@ -42,7 +42,7 @@
             <div class="card-header py-3">
               <h4 class="my-0 fw-normal">객실리스트</h4>
             </div>
-            <div class="list-group list-group-flush border-bottom scrollarea" id="btn_room">
+            <div class="list-group list-group-flush border-bottom scrollarea" id="btn_room" style="height:475px; overflow-y: scroll;">
 
 <!-- 			 <c:forEach items = "${list}" var = "room" varStatus = "num">
                   <option id="${num.index}" value="${room.roomcode}" style="display:none;">${room.roomname},${room.type},${room.howmany},${room.howmuch}</option>
@@ -111,8 +111,7 @@
     		console.log(result);
     		$.each(result, function(ndx, value){
     			//let li = '<option value='+value['roomcode']+'>'+value['roomname']+','+value['typename']+','+value['howmany']+','+value['howmuch']+'</option>';
-   			 let li = 
-			  		'<a href="#" id="'+value['roomcode']+'" class="list-group-item list-group-item-action py-3 lh-tight" onclick="getIndex(\''+value['roomname']+'\','+value['type']+','+value['howmany']+','+value['howmuch']+','+value['roomcode']+')">'+
+			  	let li = '<a href="#" id="'+value['roomcode']+'" class="list-group-item list-group-item-action py-3 lh-tight" onclick="getIndex(\''+value['roomname']+'\','+value['type']+','+value['howmany']+','+value['howmuch']+','+value['roomcode']+')">'+
              			'<div class="d-flex w-100 align-items-center justify-content-between">'+
                				'<h5 class="fw-bold mb-1">'+value['roomname']+'</h5>'+
               				 '<small>'+value['howmany']+'인</small>'+
@@ -146,6 +145,7 @@
                 $("#btn_room a").removeClass("bg-warning");
  	        }
 	    })
+	    
 	    $('#btnDel').click(function() {
 	    	$.post("http://localhost:8080/app/deleteRoom",{roomcode:$('#roomcode').val()},function(result) {
 	    		console.log(result);
@@ -184,18 +184,18 @@
 	    	}
 	    })
 	    
-	    $('#selRoom').click(function () {
-	    	let str = $('#selRoom option:selected').text();
-	    	let arr = str.split(",");
-	    	$('#roomName').val(arr[0]);
-	        $('#roomli option:contains("'+arr[1]+'")').prop("selected", true);
-	        $('#roomGuest').val(arr[2]);
-	        $('#roomPrice').val(arr[3]);
-	        
-	    	let code = $('#selRoom option:selected').val();
-	    	$('#roomcode').val(code);
-	        return false;
-	    })
+//	    $('#selRoom').click(function () {
+//	    	let str = $('#selRoom option:selected').text();
+//	    	let arr = str.split(",");
+//	    	$('#roomName').val(arr[0]);
+//	        $('#roomli option:contains("'+arr[1]+'")').prop("selected", true);
+//	        $('#roomGuest').val(arr[2]);
+//	        $('#roomPrice').val(arr[3]);
+//	        
+//	    	let code = $('#selRoom option:selected').val();
+//	    	$('#roomcode').val(code);
+//	        return false;
+//	    })
 	    
     })
     
