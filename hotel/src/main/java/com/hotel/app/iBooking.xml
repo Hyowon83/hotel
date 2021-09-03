@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotel.app.iBooking">
+
+	<select id = "getBookList" resultType="com.hotel.app.Bookinfo">
+		SELECT ROOMCODE, ROOMNAME, TYPENAME, HOWMANY, HOWMUCH FROM BOOKING1 ORDER BY ROOMCODE
+	</select>
+
+	<insert id = "getAbleBookList">
+		INSERT INTO BOOKING1
+		SELECT A.ROOMCODE, A.NAME ROOMNAME, B.NAME TYPENAME, A.HOWMANY, A.HOWMUCH
+		FROM ROOM A, ROOMTYPE B, BOOKING C
+		WHERE A.TYPE = B.TYPECODE AND B.NAME=#{param1} AND A.ROOMCODE != C.ROOMCODE ORDER BY A.ROOMCODE
+	</insert>
+	
+	<delete id = "doDeleteBooking1">
+		DELETE FROM BOOKING1
+	</delete>
+	
+</mapper>
