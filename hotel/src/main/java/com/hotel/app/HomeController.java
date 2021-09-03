@@ -40,34 +40,64 @@ public class HomeController {
 		return "newbie";
 	}
 	
+	@RequestMapping(value = "/signin", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	public String doSignin(HttpServletRequest hsr) {
+		//insert into member
+		iMember user = sqlSession.getMapper(iMember.class);
+		
+		String uname = hsr.getParameter("username");
+		String uid = hsr.getParameter("userid");
+		String userpw = hsr.getParameter("userpw");
+		
+//		System.out.println(uname);
+//		System.out.println(uid);
+//		System.out.println(userpw);
+
+		user.doAddUser(uname, uid, userpw);
+		
+		return "home";
+	}
+	
 	@RequestMapping(value="/check_user", method = RequestMethod.POST)
 	public String check_user(HttpServletRequest hsr, Model model) {
 		String userid=hsr.getParameter("userid");
 		String userpw=hsr.getParameter("userpw");
 		
-		HttpSession session=hsr.getSession();
-		session.setAttribute("loginid", userid);
-		
-		return "redirect:/booking";
-		
+		iMember user = sqlSession.getMapper(iMember.class);
+		int n = user.doCheckUser(userid, userpw);
+		if(n > 0) {
+			HttpSession session=hsr.getSession();
+			session.setAttribute("loginid", userid);
+			return "redirect:/booking";
+		} else {
+			return "redirect:/";
+		}
 	}
 	
 	@RequestMapping(value="/booking",method=RequestMethod.GET)
-	public String booking(HttpServletRequest hsr) {
+	public String booking(HttpServletRequest hsr, Model model) {
 		HttpSession session = hsr.getSession();
 		if(session.getAttribute("loginid") == null) {
 			return "redirect:/";
-		} else {
-			return "booking";			
 		}
+		//여기서 interface 호출, 결과를 room.jsp에 전달
+		iRoom room = sqlSession.getMapper(iRoom.class);
+		iBooking book = sqlSession.getMapper(iBooking.class);
+		//객실 정보
+		ArrayList<Bookinfo> bookinfo = book.getBookList();
+		System.out.println(bookinfo);
+		model.addAttribute("list", bookinfo);
+		//객실 타입
+		ArrayList<Roomtype> roomtype = room.getRoomType();
+		System.out.println(roomtype);
+		model.addAttribute("type", roomtype);
+		return "booking";			
 	}
 	
 	@RequestMapping("/login")
 	   public String doInfo(HttpServletRequest hsr, Model model) {
 	      String strPath = hsr.getParameter("path");
-	      if(strPath.equals("login")) {
-	         return "booking";
-	      } else if(strPath.equals("newbie")) {
+	      if(strPath.equals("newbie")) {
 	         return "newbie";
 	      } else {
 	         return "home";
@@ -100,6 +130,7 @@ public class HomeController {
 		return "redirect:/";
 	}
 	
+	//객실관리
 	@RequestMapping(value = "/getRoomList", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String getRoomList(HttpServletRequest hsr) {
@@ -150,5 +181,68 @@ public class HomeController {
 		iRoom room = sqlSession.getMapper(iRoom.class);
 		room.doUpdateRoom(rcode, rname, rtype, howmany, howmuch);
 		return "ok";
+	}
+	
+	
+	//예약관리
+	@RequestMapping(value = "/getAbleBookList", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String getAbleBookList(HttpServletRequest hsr) {
+		iBooking book = sqlSession.getMapper(iBooking.class);
+		
+		String typename = hsr.getParameter("typename");
+		//int checkin = Integer.parseInt(hsr.getParameter("checkin"));
+		//int checkout = Integer.parseInt(hsr.getParameter("checkout"));
+		
+		book.getAbleBookList(typename);
+		return "search";
+		
+//		ArrayList<Bookinfo> bookinfo = book.getAbleBookList();
+//		//찾아온 데이터로 JSONArray만들기
+//		JSONArray ja = new JSONArray();
+//		for(int i = 0; i < bookinfo.size(); i++) {
+//			JSONObject jo = new JSONObject();
+//			jo.put("roomcode", bookinfo.get(i).getRoomcode());
+//			jo.put("roomname", bookinfo.get(i).getRoomname());
+//			jo.put("typename", bookinfo.get(i).getTypename());
+//			jo.put("type", bookinfo.get(i).getType());
+//			jo.put("howmany", bookinfo.get(i).getHowmany());
+//			jo.put("howmuch", bookinfo.get(i).getHowmuch());
+//			ja.add(jo);
+//		}
+//		System.out.println(ja.toString());
+//		
+//		
+//		return ja.toString();
+	}
+	
+	@RequestMapping(value = "/getBookList", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String getBookList(HttpServletRequest hsr) {
+		iBooking book = sqlSession.getMapper(iBooking.class);
+		ArrayList<Bookinfo> bookinfo = book.getBookList();
+		//찾아온 데이터로 JSONArray만들기
+		JSONArray ja = new JSONArray();
+		for(int i = 0; i < bookinfo.size(); i++) {
+			JSONObject jo = new JSONObject();
+			jo.put("bookcode", bookinfo.get(i).getBookcode());
+			jo.put("roomcode", bookinfo.get(i).getRoomcode());
+			jo.put("person", bookinfo.get(i).getPerson());
+			jo.put("checkin", bookinfo.get(i).getCheckin());
+			jo.put("checkout", bookinfo.get(i).getCheckout());
+			jo.put("name", bookinfo.get(i).getName());
+			jo.put("mobile", bookinfo.get(i).getMobile());
+			ja.add(jo);
+		}
+		System.out.println(ja.toString());
+		return ja.toString();
+	}
+	
+	@RequestMapping(value = "/deleteBooking1", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String deleteBooking1(HttpServletRequest hsr) {
+		iBooking book = sqlSession.getMapper(iBooking.class);
+		book.doDeleteBooking1();
+		return "del";
 	}
 }
