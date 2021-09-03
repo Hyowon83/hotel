@@ -91,6 +91,10 @@ public class HomeController {
 		ArrayList<Roomtype> roomtype = room.getRoomType();
 		System.out.println(roomtype);
 		model.addAttribute("type", roomtype);
+		//예약된 객실정보
+		ArrayList<Bookinfo> booked = book.bookedRoomList();
+		System.out.println(booked);
+		model.addAttribute("book", booked);
 		return "booking";			
 	}
 	
