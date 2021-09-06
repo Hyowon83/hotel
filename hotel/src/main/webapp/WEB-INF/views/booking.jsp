@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -40,7 +41,7 @@
       <div class="row row-cols-1 row-cols-md-3 mb-3 text-center d-flex justify-content-center">
 
         <div class="col-3">
-            <div class="card mb-4 rounded-3 shadow-sm bg-dark text-white">
+            <div class="card mb-2 rounded-3 shadow-sm bg-dark text-white">
                 <div class="card-header py-3 text-white">
                   <h4 class="my-0 fw-normal">객실검색</h4>
                 </div>
@@ -70,37 +71,24 @@
                     <div class="card-header py-3">
                       <h4 class="my-0 fw-normal">검색된객실</h4>
                     </div>
-                    <div class="list-group list-group-flush border-bottom scrollarea">
-                    <select id="btn_book" size="10">
-                    <c:forEach items = "${list}" var = "room">
-	                  <option value="${room.roomcode}">${room.roomname},${room.typename},${room.howmany},${room.howmuch}</option>
-					</c:forEach>
-                    </select>
-                        <!-- <label class="mb-3 text-warning">검색된 객실이 없습니다.</label> -->
-                        <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" id="baebang">
-                            <div class="d-flex w-100 align-items-center justify-content-between">
-                              <h5 class="fw-bold mb-1">배방산</h5>
-                              <small class="text-muted">2인</small>
-                            </div>
-                            <div class="small" style="float:left">특실</div>
-                            <div class="small" style="float:left; color:red; display:none">(예약완료)</div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" id="gwangdukR">
-                            <div class="d-flex w-100 align-items-center justify-content-between">
-                              <h5 class="fw-bold mb-1">광덕산</h5>
-                              <small class="text-muted">2인</small>
-                            </div>
-                            <div class="small" style="float:left">특실</div>
-                            <div class="small" style="float:left; color:red; display:block">(예약완료)</div>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" id="taejo">
-                            <div class="d-flex w-100 align-items-center justify-content-between">
-                              <h5 class="fw-bold mb-1">태조산</h5>
-                              <small class="text-muted">2인</small>
-                            </div>
-                            <div class="small" style="float:left">특실</div>
-                            <div class="small" style="float:left; color:red; display:none">(예약완료)</div>
-                        </a>
+                    <div class="list-group list-group-flush border-bottom scrollarea" style="height:310px; overflow-y: auto;" id="btn_book">
+                        <label class="mb-3 text-warning" style="display:block;" id="resultSearch">검색된 객실이 없습니다.</label>
+                    
+<!--
+ 	                    <c:forEach items = "${list}" var = "room" varStatus = "num">
+		                  <option id="${num.index}" value="${room.roomcode}" style="display:none;">${room.roomname},${room.typename},${room.howmany},${room.howmuch}</option>
+	                        <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" onclick="getRoomIndex(${num.index})">
+			                  <div class="d-flex w-100 align-items-center justify-content-between">
+			                    <h5 class="fw-bold mb-1">${room.roomname}</h5>
+			                    <small>${room.howmany}인</small>
+			                  </div>
+			                  <div class="d-flex w-100 align-items-center justify-content-between">
+			                    <div class="small" style="float:left">${room.typename}</div>
+			                    <small>1박 ${room.howmuch}</small>
+			                  </div>
+		                	</a>
+						</c:forEach>
+ -->
                     </div>
                   </div>
 
@@ -113,6 +101,8 @@
             </div>
             <div class="card-body">
                 <label for="roomName" style="float:left">객실 이름</label>
+                <input type="hidden" id="bookcode" value="">
+                <input type="hidden" id="roomcode" value="">
                 <input class="form-control mb-3" type="text" name="roomName" id="roomName" value="" readonly>
                 <label for="roomtype" style="float:left">객실 종류</label>
                 <input class="form-control mb-3" type="text" name="roomtype" id="roomtype" value="" readonly>
@@ -135,14 +125,16 @@
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="roomPriceDay">-박</span>
-                    <input type="text" class="form-control" id="roomPrice" style = "text-align:right" placeholder=", 없이 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                    <input type="text" class="form-control" id="roomPrice" style = "text-align:right" placeholder=", 없이 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" readonly>
                     <span class="input-group-text">원</span>
                 </div>
+                <label for="guestNum" style="float:left">예약자 이름</label>
+                <input class="form-control mb-3" type="text" name="guestName" id="guestName" value="">
                 <label for="guestNum" style="float:left">예약자 연락번호</label>
                 <input class="form-control mb-3" type="text" name="guestNum" id="guestNum" value="" placeholder="- 없이 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                 <button type="button" id="btnCreate" class="btn btn-lg btn-warning">등록</button>
-                <button type="button" id="btnDel" class="btn btn-lg btn-warning">취소</button>
                 <button type="button" id="btnClear" class="btn btn-lg btn-warning">초기화</button>
+                <button type="button" id="btnDel" class="btn btn-lg btn-danger">예약취소</button>
             </div>
           </div>
         </div>
@@ -152,13 +144,14 @@
               <div class="card-header py-3">
                 <h4 class="my-0 fw-normal">예약현황</h4>
               </div>
-              <div class="list-group list-group-flush border-bottom scrollarea">
+              <div class="list-group list-group-flush border-bottom scrollarea" id="booked"><!--  style="height:670px; overflow-y: auto;" -->
                 <c:forEach items = "${book}" var = "book" varStatus = "num">
-                  <option id="${num.index}" value="${book.roomcode}" style="display:none;">${book.roomname},${book.typename},${book.person},${book.howmuch},${book.checkin},${book.checkout},${book.mobile},${book.howmany}</option>
-			  		<a href="#" class="list-group-item list-group-item-action py-3 lh-tight" onclick="getIndex(${num.index})">
+                  <option id="b${num.index}" value="${book.bookcode}" style="display:none;">${book.roomname},${book.typename},${book.person},${book.howmuch},${book.checkin},${book.checkout},${book.mobile},${book.howmany},${book.roomcode},${book.name}</option>
+			  		<a href="#" class="list-group-item list-group-item-action py-3 lh-tight" onclick="getIndex(${num.index})" id="a${num.index}">
 	                  <div class="d-flex w-100 align-items-center justify-content-between">
 	                    <h5 class="fw-bold mb-1">${book.roomname}</h5>
-	                    <small>${book.howmany}인 예약</small>
+	                    <c:set var="mobile_back" value="${book.mobile}"/>
+	                    <small>${book.person}인 예약 [ ${book.name}, ${fn:substring(mobile_back,7,11)} ]</small>
 	                  </div>
 	                  <div class="d-flex w-100 align-items-center justify-content-between">
 	                    <div class="small" style="float:left">${book.typename}</div>
@@ -177,7 +170,7 @@
 	let date2 = 0;
 
     $(document).ready(function() {
-    	
+
     	$("#searchIn").click(function() {
     		if($("#searchIn").val() == ""){
 				$("#searchIn").val(getToday());
@@ -216,61 +209,94 @@
     		if(checkin >= checkout) {
     			alert("체크아웃날짜를 다시 선택해주세요.");
     			return false;
-    		}
-//    		} else {
-//    			$.post("http://localhost:8080/app/getAbleBookList",{typename:typename},function(result){
+    		} else {
+    			$("#resultSearch").css("display", "none");
+    			$.post("http://localhost:8080/app/getBookList",{},function(result) {
+    	    		console.log(result);
+    	    		$.each(result, function(ndx, value){
+    	    			//let li = '<option value='+value['roomcode']+'>'+value['roomname']+','+value['typename']+','+value['howmany']+','+value['howmuch']+'</option>';
+    				  	let li = '<a href="#" id="'+value['roomcode']+'" class="list-group-item list-group-item-action py-3 lh-tight" onclick="getRoomIndex(\''+value['roomname']+'\',\''+value['typename']+'\','+value['howmany']+','+value['howmuch']+','+value['roomcode']+')">'+
+    	             			'<div class="d-flex w-100 align-items-center justify-content-between">'+
+    	               				'<h5 class="fw-bold mb-1">'+value['roomname']+'</h5>'+
+    	              				 '<small>'+value['howmany']+'인</small>'+
+    	             			'</div>'+
+    	             			'<div class="d-flex w-100 align-items-center justify-content-between">'+
+    	               				'<div class="small" style="float:left">'+value['typename']+'</div>'+
+    	               				'<small>1박 '+value['howmuch']+'</small>'+
+    	             			'</div>'+
+    		       			'</a>';
+    	              	$('#btn_book').append(li);
+    	    		});
+    	    	},'json')
+//   			$.post("http://localhost:8080/app/getAbleBookList",{typename:typename},function(result){
 //    				if(result=="search"){
 //        				console.log(result);
 //    	    			location.reload();    
 //        			}
 //		    	}, 'text');	    			
-//    		}
-//	    	return false;
-//    	})
-    })
-    
-    $(".list-group-item").click(function(){
-
-        var listItems = $(".list-group-item"); //Select all list items
-     
-        //Remove 'active' tag for all list items
-        for (let i = 0; i < listItems.length; i++) {                    
-           listItems[i].classList.remove("active");
-           listItems[i].classList.remove("bg-warning");
-        }
-     
-        //Add 'active' tag for currently selected item
-        this.classList.add("active");
-        this.classList.add("bg-warning");
-     })
-     
-     $("#btn_book option").click(function() {
-    	 let str = $(this).text();
-    	 let arr = str.split(",");
-    	 $('#roomName').val(arr[0]);
-         $('#roomtype').val(arr[1]);
-         $('#roomGuest').val(1);
-         $('#roomGuest').attr('max', arr[2]);
-         $('#oneDay').text("1박 "+arr[3]+"원");
-         
-         $('#roomDateIn').val($("#searchIn").val());
-         $('#roomDateOut').val($("#searchOut").val());
-         
- 		getDate($("#searchIn").val(),$("#searchOut").val());
-         let day = date2-date;
-         console.log(date,date2,day);
-         
-         $('#roomPriceDay').text(day+"박");
-         $('#roomPrice').val(parseInt(arr[3])*day);
-         
-     	let code = $(this).val();
-     	$('#roomcode').val(code);
-         return false;
-     })
+    		}
+	    	return false;
+    	})
+		
+		$("#btnCreate").click(function() {
+	    	let roomcode = $('#roomcode').val();
+	    	let person = $('#roomGuest').val();
+	    	let checkin = $('#roomDateIn').val();
+	    	let checkout = $('#roomDateOut').val();
+	    	let name = $('#guestName').val();
+	    	let mobile = $('#guestNum').val();
+	    	let bookcode = $('#bookcode').val();
+	    	if(person == "" || checkin == "" || checkout == "" || name == "" || mobile == "") {
+	    		alert("값을 전부 입력해주세요.");
+	    		return false;
+	    	}
+	    	if(bookcode == "") {
+		    	$.post("http://localhost:8080/app/addBook",{roomcode:roomcode,person:person,checkin:checkin,checkout:checkout,name:name,mobile:mobile},function(result){
+		    		if(result=="ok"){
+		    			location.reload();
+		    		}
+		    	}, 'text');	    		
+	    	} else {
+	    		$.post("http://localhost:8080/app/updateBook",{roomcode:roomcode,person:person,checkin:checkin,checkout:checkout,name:name,mobile:mobile},function(result){
+		    		if(result=="ok"){
+		    			location.reload();
+		    		}
+		    	}, 'text');	    	
+	    	}	
+	    })
+	    
+	    $('#btnDel').click(function() {
+	    	if(confirm("예약을 취소하시겠습니까?")) {
+		    	$.post("http://localhost:8080/app/deleteBook",{bookcode:$('#bookcode').val()},function(result) {
+		    		console.log(result);
+		    		if(result=="ok"){
+			    		location.reload();
+		    		}
+		    	}, 'text');
+	    	}
+	    	return false;
+	    })
+	    
+	   	$('#btnClear').click(function() {
+	        del();               
+	    })
+    	
+	    $(document).on("click","#btn_book a, .list-group-item",function(event){
+            // 동적으로 여러 태그가 생성된 경우라면 이런식으로 클릭된 객체를 this 키워드를 이용해서 잡아올 수 있다.
+            for (let i = 0; i < $("#btn_room a").length; i++) {                    
+            	$("#btn_room a").removeClass("active");
+                $("#btn_room a").removeClass("bg-warning");
+ 	        }
+            
+            $(this).addClass("active");
+            $(this).addClass("bg-warning");
+         });
+	     
     })
 
     function getIndex(num) {
-    	let str = $('#'+num).text();
+    	del();
+    	let str = $('#b'+num).text();
     	let arr = str.split(",");
     	$('#roomName').val(arr[0]);
         $('#roomtype').val(arr[1]);
@@ -280,24 +306,52 @@
         $('#roomDateIn').val(arr[4]);
         $('#roomDateOut').val(arr[5]);
         $('#guestNum').val(arr[6]);
+    	$('#roomcode').val(arr[8]);
+    	$('#guestName').val(arr[9]);
         
 		getDate(arr[4],arr[5]);
-        let day = date2-date;
+        //let day = date2-date;
+        let day = (date2.getTime() - date.getTime()) / (1000*60*60*24);
         console.log(date,date2,day);
         
         $('#roomPriceDay').text(day+"박");
         $('#roomPrice').val(parseInt(arr[3])*day);
         
-    	let code = $('#'+num).val();
-    	$('#roomcode').val(code);
+        let code = $('#b'+num).val();
+        $('#bookcode').val(code);
+
+        return false;
+	}
+    
+    function getRoomIndex(a,b,c,d,e) {
+    	del();
+   	 	$('#roomName').val(a);
+        $('#roomtype').val(b);
+        $('#roomGuest').val(1);
+        $('#roomGuest').attr('max', c);
+        $('#oneDay').text("1박 "+d+"원");
+        
+        $('#roomDateIn').val($("#searchIn").val());
+        $('#roomDateOut').val($("#searchOut").val());
+        
+		getDate($("#searchIn").val(),$("#searchOut").val());
+        //let day = date2-date;
+        let day = (date2.getTime() - date.getTime()) / (1000*60*60*24);
+        console.log(date,date2,day);
+        
+        $('#roomPriceDay').text(day+"박");
+        $('#roomPrice').val(parseInt(d)*day);
+
+    	$('#roomcode').val(e);
+    	
         return false;
 	}
     
     function getDate(a,b) {
-    	date = a.replace(/\-/g,"");
-    	date = parseInt(date);
-    	date2 = b.replace(/\-/g,"");
-    	date2 = parseInt(date2);
+    	let date_arr = a.split("-");
+    	let date2_arr = b.split("-");
+    	date = new Date(date_arr[0], date_arr[1], date_arr[2]);
+    	date2 = new Date(date2_arr[0], date2_arr[1], date2_arr[2]);
     }
     
 	function getToday(){
@@ -307,6 +361,13 @@
 	    var day = ("0" + today.getDate()).slice(-2);
 
 	    return year + "-" + month + "-" + day;
+	}
+	
+	function del() {
+		$('#roomName, #roomtype, #roomGuest, #roomDateIn, #roomDateOut, #guestNum, #roomcode, #guestName,#roomPrice, #bookcode').val('');
+        $('#oneDay').text("1박 -원");
+        $('#roomPriceDay').text("-박");                 
+        $("a").removeClass("active bg-warning");
 	}
   </script>
 </html>

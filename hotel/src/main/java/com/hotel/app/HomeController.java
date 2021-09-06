@@ -220,6 +220,15 @@ public class HomeController {
 //		return ja.toString();
 	}
 	
+	@RequestMapping(value = "/deleteBook", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String deleteBook(HttpServletRequest hsr) {
+		int bookcode = Integer.parseInt(hsr.getParameter("bookcode"));
+		iBooking book = sqlSession.getMapper(iBooking.class);
+		book.doDeleteBook(bookcode);
+		return "ok";
+	}
+	
 	@RequestMapping(value = "/getBookList", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String getBookList(HttpServletRequest hsr) {
@@ -229,14 +238,14 @@ public class HomeController {
 		JSONArray ja = new JSONArray();
 		for(int i = 0; i < bookinfo.size(); i++) {
 			JSONObject jo = new JSONObject();
-			jo.put("bookcode", bookinfo.get(i).getBookcode());
 			jo.put("roomcode", bookinfo.get(i).getRoomcode());
-			jo.put("person", bookinfo.get(i).getPerson());
-			jo.put("checkin", bookinfo.get(i).getCheckin());
-			jo.put("checkout", bookinfo.get(i).getCheckout());
-			jo.put("name", bookinfo.get(i).getName());
-			jo.put("mobile", bookinfo.get(i).getMobile());
+			jo.put("roomname", bookinfo.get(i).getRoomname());
+			jo.put("typename", bookinfo.get(i).getTypename());
+			jo.put("type", bookinfo.get(i).getType());
+			jo.put("howmany", bookinfo.get(i).getHowmany());
+			jo.put("howmuch", bookinfo.get(i).getHowmuch());
 			ja.add(jo);
+			
 		}
 		System.out.println(ja.toString());
 		return ja.toString();
@@ -248,5 +257,33 @@ public class HomeController {
 		iBooking book = sqlSession.getMapper(iBooking.class);
 		book.doDeleteBooking1();
 		return "del";
+	}
+	
+	@RequestMapping(value = "/addBook", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String addBook(HttpServletRequest hsr) {
+		int roomcode = Integer.parseInt(hsr.getParameter("roomcode"));
+		int person = Integer.parseInt(hsr.getParameter("person"));
+		String checkin = hsr.getParameter("checkin");
+		String checkout = hsr.getParameter("checkout");
+		String gname = hsr.getParameter("name");
+		String mobile = hsr.getParameter("mobile");
+		iBooking book = sqlSession.getMapper(iBooking.class);
+		book.doAddBook(roomcode, person, checkin, checkout, gname, mobile);
+		return "ok";
+	}
+	
+	@RequestMapping(value = "/updateBook", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String updateBook(HttpServletRequest hsr) {
+		int roomcode = Integer.parseInt(hsr.getParameter("roomcode"));
+		int person = Integer.parseInt(hsr.getParameter("person"));
+		String checkin = hsr.getParameter("checkin");
+		String checkout = hsr.getParameter("checkout");
+		String gname = hsr.getParameter("name");
+		String mobile = hsr.getParameter("mobile");
+		iBooking book = sqlSession.getMapper(iBooking.class);
+		book.doUpdateBook(roomcode, person, checkin, checkout, gname, mobile);
+		return "ok";
 	}
 }

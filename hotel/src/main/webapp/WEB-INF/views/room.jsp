@@ -97,8 +97,8 @@
                 </div>
                 
                 <button type="button" id="btnCreate" class="btn btn-lg btn-warning">등록</button>
-                <button type="button" id="btnDel" class="btn btn-lg btn-warning">삭제</button>
                 <button type="button" id="btnClear" class="btn btn-lg btn-warning">초기화</button>
+                <button type="button" id="btnDel" class="btn btn-lg btn-danger">삭제</button>
             </div>
           </div>
         </div>
@@ -147,15 +147,17 @@
 	    })
 	    
 	    $('#btnDel').click(function() {
-	    	$.post("http://localhost:8080/app/deleteRoom",{roomcode:$('#roomcode').val()},function(result) {
-	    		console.log(result);
-	    		let rc = $('#roomcode').val();
-	    		if(result=="ok"){
-	    			$('#btnClear').trigger('click');
-	    			//$('#selRoom option:selected').remove();
-	    			$('#'+rc).remove();
-	    		}
-	    	}, 'text');
+	    	if(confirm("객실을 삭제하시겠습니까?")) {
+		    	$.post("http://localhost:8080/app/deleteRoom",{roomcode:$('#roomcode').val()},function(result) {
+		    		console.log(result);
+		    		let rc = $('#roomcode').val();
+		    		if(result=="ok"){
+		    			$('#btnClear').trigger('click');
+		    			//$('#selRoom option:selected').remove();
+		    			$('#'+rc).remove();
+		    		}
+		    	}, 'text');
+	    	}
 	    	return false;
 	    })
 	    
