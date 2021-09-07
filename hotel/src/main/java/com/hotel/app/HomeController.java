@@ -84,17 +84,17 @@ public class HomeController {
 		iRoom room = sqlSession.getMapper(iRoom.class);
 		iBooking book = sqlSession.getMapper(iBooking.class);
 		//객실 정보
-		ArrayList<Bookinfo> bookinfo = book.getBookList();
-		System.out.println(bookinfo);
-		model.addAttribute("list", bookinfo);
+//		ArrayList<Bookinfo> bookinfo = book.getBookList();
+//		System.out.println(bookinfo);
+//		model.addAttribute("list", bookinfo);
 		//객실 타입
 		ArrayList<Roomtype> roomtype = room.getRoomType();
 		System.out.println(roomtype);
 		model.addAttribute("type", roomtype);
 		//예약된 객실정보
-		ArrayList<Bookinfo> booked = book.bookedRoomList();
-		System.out.println(booked);
-		model.addAttribute("book", booked);
+//		ArrayList<Bookinfo> booked = book.bookedRoomList();
+//		System.out.println(booked);
+//		model.addAttribute("book", booked);
 		return "booking";			
 	}
 	
@@ -188,36 +188,37 @@ public class HomeController {
 	}
 	
 	
-	//예약관리
-	@RequestMapping(value = "/getAbleBookList", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	//예약된 객실
+	@RequestMapping(value = "/bookedRoomList", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
-	public String getAbleBookList(HttpServletRequest hsr) {
+	public String getBookedRoomList(HttpServletRequest hsr) {
 		iBooking book = sqlSession.getMapper(iBooking.class);
 		
-		String typename = hsr.getParameter("typename");
-		//int checkin = Integer.parseInt(hsr.getParameter("checkin"));
-		//int checkout = Integer.parseInt(hsr.getParameter("checkout"));
+		//String typename = hsr.getParameter("typename");
+		String checkin = hsr.getParameter("checkin");
+		String checkout = hsr.getParameter("checkout");
 		
-		book.getAbleBookList(typename);
-		return "search";
-		
-//		ArrayList<Bookinfo> bookinfo = book.getAbleBookList();
-//		//찾아온 데이터로 JSONArray만들기
-//		JSONArray ja = new JSONArray();
-//		for(int i = 0; i < bookinfo.size(); i++) {
-//			JSONObject jo = new JSONObject();
-//			jo.put("roomcode", bookinfo.get(i).getRoomcode());
-//			jo.put("roomname", bookinfo.get(i).getRoomname());
-//			jo.put("typename", bookinfo.get(i).getTypename());
-//			jo.put("type", bookinfo.get(i).getType());
-//			jo.put("howmany", bookinfo.get(i).getHowmany());
-//			jo.put("howmuch", bookinfo.get(i).getHowmuch());
-//			ja.add(jo);
-//		}
-//		System.out.println(ja.toString());
-//		
-//		
-//		return ja.toString();
+		ArrayList<Bookinfo> bookinfo = book.bookedRoomList(checkin, checkout);
+		//찾아온 데이터로 JSONArray만들기
+		JSONArray ja = new JSONArray();
+		for(int i = 0; i < bookinfo.size(); i++) {
+			JSONObject jo = new JSONObject();
+			jo.put("roomcode", bookinfo.get(i).getRoomcode());
+			jo.put("roomname", bookinfo.get(i).getRoomname());
+			jo.put("typename", bookinfo.get(i).getTypename());
+			jo.put("howmany", bookinfo.get(i).getHowmany());
+			jo.put("checkin", bookinfo.get(i).getCheckin());
+			jo.put("checkout", bookinfo.get(i).getCheckout());
+			jo.put("howmuch", bookinfo.get(i).getHowmuch());
+			jo.put("person", bookinfo.get(i).getPerson());
+			jo.put("name", bookinfo.get(i).getName());
+			jo.put("mobile", bookinfo.get(i).getMobile());
+			jo.put("bookcode", bookinfo.get(i).getBookcode());
+			ja.add(jo);
+			
+		}
+		System.out.println(ja.toString());
+		return ja.toString();
 	}
 	
 	@RequestMapping(value = "/deleteBook", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
@@ -229,11 +230,14 @@ public class HomeController {
 		return "ok";
 	}
 	
+	//예약 가능한 객실
 	@RequestMapping(value = "/getBookList", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String getBookList(HttpServletRequest hsr) {
 		iBooking book = sqlSession.getMapper(iBooking.class);
-		ArrayList<Bookinfo> bookinfo = book.getBookList();
+		String checkin = hsr.getParameter("checkin");
+		String checkout = hsr.getParameter("checkout");
+		ArrayList<Bookinfo> bookinfo = book.getBookList(checkin, checkout);
 		//찾아온 데이터로 JSONArray만들기
 		JSONArray ja = new JSONArray();
 		for(int i = 0; i < bookinfo.size(); i++) {
@@ -247,16 +251,7 @@ public class HomeController {
 			ja.add(jo);
 			
 		}
-		System.out.println(ja.toString());
 		return ja.toString();
-	}
-	
-	@RequestMapping(value = "/deleteBooking1", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
-	@ResponseBody
-	public String deleteBooking1(HttpServletRequest hsr) {
-		iBooking book = sqlSession.getMapper(iBooking.class);
-		book.doDeleteBooking1();
-		return "del";
 	}
 	
 	@RequestMapping(value = "/addBook", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
