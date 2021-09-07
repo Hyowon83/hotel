@@ -14,6 +14,12 @@
     <title>호텔객실관리</title>
   </head>
   <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+  <style>
+	  @import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&display=swap');
+	  body {
+	    font-family: 'Gowun Batang', serif;
+	    }
+  </style>
   <body  style="overflow-x: hidden">
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
