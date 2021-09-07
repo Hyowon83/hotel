@@ -150,9 +150,10 @@
               <div class="card-header py-3">
                 <h4 class="my-0 fw-normal">예약현황</h4>
               </div>
-              <div class="list-group list-group-flush border-bottom scrollarea" id="booked">
+              <div class="list-group list-group-flush border-bottom scrollarea">
               	<label class="mb-3 text-warning" style="display:block;" id="resultBooked">예약된 객실이 없습니다.</label>
-
+              	<div class="list-group list-group-flush border-bottom scrollarea" id="booked">
+              </div>
               </div>
             </div>
           </div>
@@ -216,6 +217,7 @@
     	    	$.post("http://localhost:8080/app/bookedRoomList",{checkin:checkin,checkout:checkout},function(result) {
     	    		console.log(checkin, checkout);
    	    			$('#booked *').remove();
+   	    			$("#resultBooked").css("display", "block");
     	    		$.each(result, function(ndx, value){
 //    	    			let lit = '<option value='+value['roomcode']+'>'+value['roomname']+','+value['typename']+','+value['howmany']+','+value['howmuch']+'</option>';
     				  	let lit =
