@@ -7,5 +7,5 @@ public interface iBooking {
 	ArrayList<Bookinfo> bookedRoomList(String checkin, String checkout);
 	void doDeleteBook(int bookcode);
 	void doAddBook(int roomcode, int person, String checkin, String checkout, String name, String mobile);
-	void doUpdateBook(int roomcode, int person, String checkin, String checkout, String name, String mobile);
+	void doUpdateBook(int bookcode, int person, String name, String mobile);
 }

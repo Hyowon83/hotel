@@ -118,11 +118,11 @@
                 </div>
                 <label for="roomDay" style="float:left">숙박 기간</label>
                 <div class="input-group mb-1">
-                      <input type="date" class="form-control" id="roomDateIn">
+                      <input type="date" class="form-control" id="roomDateIn" readonly>
                       <span class="input-group-text">17:00~</span>
                 </div>
                 <div class="input-group mb-3">
-                      <input type="date" class="form-control" id="roomDateOut">
+                      <input type="date" class="form-control" id="roomDateOut" readonly>
                       <span class="input-group-text">~12:00</span>
                 </div>
                 <div class="d-flex w-100 align-items-center justify-content-between">
@@ -257,13 +257,15 @@
 	    	if(bookcode == "") {
 		    	$.post("http://localhost:8080/app/addBook",{roomcode:roomcode,person:person,checkin:checkin,checkout:checkout,name:name,mobile:mobile},function(result){
 		    		if(result=="ok"){
-		    			location.reload();
+		    			$('#btnSearch').trigger('click');
+		    			del();
 		    		}
 		    	}, 'text');	    		
 	    	} else {
-	    		$.post("http://localhost:8080/app/updateBook",{roomcode:roomcode,person:person,checkin:checkin,checkout:checkout,name:name,mobile:mobile},function(result){
+	    		$.post("http://localhost:8080/app/updateBook",{bookcode:bookcode,person:person,name:name,mobile:mobile},function(result){
 		    		if(result=="ok"){
-		    			location.reload();
+		    			$('#btnSearch').trigger('click');
+		    			del();
 		    		}
 		    	}, 'text');	    	
 	    	}
@@ -276,7 +278,8 @@
 			    	$.post("http://localhost:8080/app/deleteBook",{bookcode:$('#bookcode').val()},function(result) {
 			    		console.log(result);
 			    		if(result=="ok"){
-				    		location.reload();
+			    			$('#btnSearch').trigger('click');
+			    			del();
 			    		}
 			    	}, 'text');
 		    	}	    		

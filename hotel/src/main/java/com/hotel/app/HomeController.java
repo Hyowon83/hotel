@@ -271,14 +271,12 @@ public class HomeController {
 	@RequestMapping(value = "/updateBook", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
 	@ResponseBody
 	public String updateBook(HttpServletRequest hsr) {
-		int roomcode = Integer.parseInt(hsr.getParameter("roomcode"));
+		int bookcode = Integer.parseInt(hsr.getParameter("bookcode"));
 		int person = Integer.parseInt(hsr.getParameter("person"));
-		String checkin = hsr.getParameter("checkin");
-		String checkout = hsr.getParameter("checkout");
 		String gname = hsr.getParameter("name");
 		String mobile = hsr.getParameter("mobile");
 		iBooking book = sqlSession.getMapper(iBooking.class);
-		book.doUpdateBook(roomcode, person, checkin, checkout, gname, mobile);
+		book.doUpdateBook(bookcode, person, gname, mobile);
 		return "ok";
 	}
 }
