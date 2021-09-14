@@ -30,7 +30,7 @@
                 <input class="form-control mb-3" type="text" id="username" name="username">
                 <label for="userid" style="float:left">USERID</label>
                 <input class="form-control mb-3" type="text" id="userid" name="userid">
-                <input type = text id="userid_check">
+                <input type = hidden id="userid_check">
                 <label for="userpw" style="float:left">PASSWORD</label>
                 <input class="form-control mb-3" type="password" id="userpw" name="userpw">
                 <label for="checkpw" style="float:left">checkPASSWORD</label>

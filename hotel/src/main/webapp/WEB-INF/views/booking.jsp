@@ -262,12 +262,14 @@
 		    		}
 		    	}, 'text');	    		
 	    	} else {
-	    		$.post("http://localhost:8080/app/updateBook",{bookcode:bookcode,person:person,name:name,mobile:mobile},function(result){
-		    		if(result=="ok"){
-		    			$('#btnSearch').trigger('click');
-		    			del();
-		    		}
-		    	}, 'text');	    	
+	    		if(confirm("예약을 수정하시겠습니까?")) {
+		    		$.post("http://localhost:8080/app/updateBook",{bookcode:bookcode,person:person,name:name,mobile:mobile},function(result){
+			    		if(result=="ok"){
+			    			$('#btnSearch').trigger('click');
+			    			del();
+			    		}
+			    	}, 'text');
+	    		}
 	    	}
 	    	return false;
 	    })

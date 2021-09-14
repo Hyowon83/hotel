@@ -174,11 +174,13 @@
 		    		}
 		    	}, 'text');	    		
 	    	} else {
-	    		$.post("http://localhost:8080/app/updateRoom",{roomcode:roomcode,roomname:roomname,roomtype:roomlist,howmany:roomguest,howmuch:roomprice},function(result){
-		    		if(result=="ok"){
-		    			location.reload();
-		    		}
-		    	}, 'text');	    	
+	    		if(confirm("객실을 수정하시겠습니까?")) {
+		    		$.post("http://localhost:8080/app/updateRoom",{roomcode:roomcode,roomname:roomname,roomtype:roomlist,howmany:roomguest,howmuch:roomprice},function(result){
+			    		if(result=="ok"){
+			    			location.reload();
+			    		}
+			    	}, 'text');
+	    		}
 	    	}
 	    })
 	    

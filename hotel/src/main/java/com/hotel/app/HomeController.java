@@ -171,6 +171,10 @@ public class HomeController {
 		int howmany = Integer.parseInt(hsr.getParameter("howmany"));
 		int howmuch = Integer.parseInt(hsr.getParameter("howmuch"));
 		iRoom room = sqlSession.getMapper(iRoom.class);
+//		System.out.println(rname);
+//		System.out.println(rtype);
+//		System.out.println(howmany);
+//		System.out.println(howmuch);
 		room.doAddRoom(rname, rtype, howmany, howmuch);
 		return "ok";
 	}
