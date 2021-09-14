@@ -1,9 +1,0 @@
-# Site Settings
-locale                   : "en-US"
-title                    : "Hyotel Management"
-title_separator          : "-"
-subtitle                 : # site tagline that appears below site title in masthead
-name                     : "Hyowon"
-description              : "An amazing website."
-url                      : "https://hyowon83.github.io/hotel/" # the base hostname & protocol
-baseurl                  : # the subpath of your site, e.g. ""
