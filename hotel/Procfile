@@ -1,1 +1,1 @@
-web: java -Dspring.server.port=8080 -Dspring.profiles.active=production $JAVA_OPTS -jar app-1.0.0-BUILD-SNAPSHOT.war
+web: java $JAVA_OPTS -jar target/webapp-runner-8.0.33.0.jar --port $PORT target/*.war
