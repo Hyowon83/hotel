@@ -30,7 +30,7 @@ public class HomeController {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	@RequestMapping("/")
+	@RequestMapping("")
 	public String home(Locale locale, Model model) {
 		return "home";
 	}
