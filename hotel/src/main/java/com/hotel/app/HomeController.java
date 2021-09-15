@@ -35,11 +35,6 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping("")
-	public String gohome(Locale locale, Model model) {
-		return "home";
-	}
-	
 	@RequestMapping("/newbie")
 	public String getInfo(Locale locale, Model model) {
 		return "newbie";
