@@ -31,7 +31,7 @@
               <h4 class="my-0 fw-normal">회원가입</h4>
             </div>
             <div class="card-body">
-			<form method = "post" action = "/app/signin">
+			<form method = "post" action = "/signin">
                 <label for="username" style="float:left">USERNAME</label>
                 <input class="form-control mb-3" type="text" id="username" name="username">
                 <label for="userid" style="float:left">USERID</label>
@@ -42,7 +42,7 @@
                 <label for="checkpw" style="float:left">checkPASSWORD</label>
                 <input class="form-control mb-3" type="password" id="checkpw">
 				<button type = submit id="signin" class="btn btn-lg btn-warning">회원가입</button>
-				<button type = button onclick="location.href='/app/'" class="btn btn-lg btn-warning">돌아가기</button>
+				<button type = button onclick="location.href='/'" class="btn btn-lg btn-warning">돌아가기</button>
 				<button type = reset class="btn btn-lg btn-danger">취소</button>
 			</form>
             </div>

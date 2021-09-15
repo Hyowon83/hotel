@@ -30,13 +30,13 @@
               <svg class="bi me-2" width="40" height="20" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
             </a>
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="/app/" class="nav-link px-2 text-secondary">Home</a></li>
-              <li><a href="/app/booking" class="nav-link px-2 text-white">예약관리</a></li>
+              <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
+              <li><a href="/booking" class="nav-link px-2 text-white">예약관리</a></li>
               <li><a class="nav-link px-2 text-warning">객실관리</a></li>
             </ul>
             <div>
 	            <small>${loginid}님 환영합니다.</small>
-	            <a href="/app/logout" class="text-white">로그아웃</a>            
+	            <a href="/logout" class="text-white">로그아웃</a>            
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@
   <script>
     $(document).ready(function() {
     	console.log('ready');
-    	$.post("http://localhost:8080/app/getRoomList",{},function(result) {
+    	$.post("http://localhost:8080/getRoomList",{},function(result) {
     		console.log(result);
     		$.each(result, function(ndx, value){
     			//let li = '<option value='+value['roomcode']+'>'+value['roomname']+','+value['typename']+','+value['howmany']+','+value['howmuch']+'</option>';
@@ -144,7 +144,7 @@
 	    
 	    $('#btnDel').click(function() {
 	    	if(confirm("객실을 삭제하시겠습니까?")) {
-		    	$.post("http://localhost:8080/app/deleteRoom",{roomcode:$('#roomcode').val()},function(result) {
+		    	$.post("http://localhost:8080/deleteRoom",{roomcode:$('#roomcode').val()},function(result) {
 		    		console.log(result);
 		    		let rc = $('#roomcode').val();
 		    		if(result=="ok"){
@@ -168,14 +168,14 @@
 	    		return false;
 	    	}
 	    	if(roomcode == "") {
-		    	$.post("http://localhost:8080/app/addRoom",{roomname:roomname,roomtype:roomlist,howmany:roomguest,howmuch:roomprice},function(result){
+		    	$.post("http://localhost:8080/addRoom",{roomname:roomname,roomtype:roomlist,howmany:roomguest,howmuch:roomprice},function(result){
 		    		if(result=="ok"){
 		    			location.reload();
 		    		}
 		    	}, 'text');	    		
 	    	} else {
 	    		if(confirm("객실을 수정하시겠습니까?")) {
-		    		$.post("http://localhost:8080/app/updateRoom",{roomcode:roomcode,roomname:roomname,roomtype:roomlist,howmany:roomguest,howmuch:roomprice},function(result){
+		    		$.post("http://localhost:8080/updateRoom",{roomcode:roomcode,roomname:roomname,roomtype:roomlist,howmany:roomguest,howmuch:roomprice},function(result){
 			    		if(result=="ok"){
 			    			location.reload();
 			    		}

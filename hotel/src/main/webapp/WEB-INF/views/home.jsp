@@ -31,7 +31,7 @@
               <h4 class="my-0 fw-normal">로그인</h4>
             </div>
             <div class="card-body">
-			<form method = "post" action = "/app/check_user/">
+			<form method = "post" action = "/check_user/">
                 <label for="roomName" style="float:left">USERID</label>
                 <input class="form-control mb-3" type="text" name="userid">
                 <label for="roomName" style="float:left">PASSWORD</label>
