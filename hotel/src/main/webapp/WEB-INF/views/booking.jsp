@@ -214,7 +214,7 @@
     	    		});
     	    	},'json')
     	    	
-    	    	$.post("http://localhost:8080/bookedRoomList",{checkin:checkin,checkout:checkout},function(result) {
+    	    	$.post("http://localhost:8080/bookedRoomList",{checkin:checkin,checkout:checkout,typename:typename},function(result) {
     	    		console.log(checkin, checkout);
    	    			$('#booked *').remove();
    	    			$("#resultBooked").css("display", "block");

@@ -198,11 +198,11 @@ public class HomeController {
 	public String getBookedRoomList(HttpServletRequest hsr) {
 		iBooking book = sqlSession.getMapper(iBooking.class);
 		
-		//String typename = hsr.getParameter("typename");
+		String typename = hsr.getParameter("typename");
 		String checkin = hsr.getParameter("checkin");
 		String checkout = hsr.getParameter("checkout");
 		
-		ArrayList<Bookinfo> bookinfo = book.bookedRoomList(checkin, checkout);
+		ArrayList<Bookinfo> bookinfo = book.bookedRoomList(checkin, checkout,typename);
 		//찾아온 데이터로 JSONArray만들기
 		JSONArray ja = new JSONArray();
 		for(int i = 0; i < bookinfo.size(); i++) {

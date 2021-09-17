@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.hotel.app.iRoom">
+
+	<!-- ROOM 쿼리 -->
+	<select id = "getRoomList" resultType="com.hotel.app.Roominfo">
+		SELECT A.ROOMCODE, A.NAME ROOMNAME, B.NAME TYPENAME, A.TYPE, A.HOWMANY, A.HOWMUCH FROM ROOM A, ROOMTYPE B WHERE A.TYPE = B.TYPECODE ORDER BY A.ROOMCODE
+	</select>
+	
+	<select id = "getRoomType" resultType="com.hotel.app.Roomtype">
+		SELECT TYPECODE, NAME FROM ROOMTYPE ORDER BY NAME
+	</select>
+	
+	<delete id = "doDeleteRoom">
+		DELETE FROM ROOM WHERE ROOMCODE=#{param1}
+	</delete>
+	
+	<insert id = "doAddRoom">
+		INSERT INTO ROOM(NAME, TYPE, HOWMANY, HOWMUCH) VALUES(#{param1}, #{param2}, #{param3}, #{param4})
+	</insert>
+	
+	<update id = "doUpdateRoom">
+		UPDATE ROOM SET NAME=#{param2}, TYPE=#{param3}, HOWMANY=#{param4}, HOWMUCH=#{param5}
+		WHERE ROOMCODE=#{param1}
+	</update>
+
+</mapper>
