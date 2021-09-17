@@ -195,7 +195,7 @@
     			return false;
     		} else {
     			
-    			$.post("http://localhost:8080/getBookList",{checkin:checkin,checkout:checkout},function(result) {
+    			$.post("/getBookList",{checkin:checkin,checkout:checkout},function(result) {
     	    		console.log(checkin, checkout);
    	    			$('#btn_book *').remove();
     	    		$.each(result, function(ndx, value){
@@ -214,7 +214,7 @@
     	    		});
     	    	},'json')
     	    	
-    	    	$.post("http://localhost:8080/bookedRoomList",{checkin:checkin,checkout:checkout,typename:typename},function(result) {
+    	    	$.post("/bookedRoomList",{checkin:checkin,checkout:checkout,typename:typename},function(result) {
     	    		console.log(checkin, checkout);
    	    			$('#booked *').remove();
    	    			$("#resultBooked").css("display", "block");
@@ -255,7 +255,7 @@
 	    		return false;
 	    	}
 	    	if(bookcode == "") {
-		    	$.post("http://localhost:8080/addBook",{roomcode:roomcode,person:person,checkin:checkin,checkout:checkout,name:name,mobile:mobile},function(result){
+		    	$.post("/addBook",{roomcode:roomcode,person:person,checkin:checkin,checkout:checkout,name:name,mobile:mobile},function(result){
 		    		if(result=="ok"){
 		    			$('#btnSearch').trigger('click');
 		    			del();
@@ -263,7 +263,7 @@
 		    	}, 'text');	    		
 	    	} else {
 	    		if(confirm("예약을 수정하시겠습니까?")) {
-		    		$.post("http://localhost:8080/updateBook",{bookcode:bookcode,person:person,name:name,mobile:mobile},function(result){
+		    		$.post("/updateBook",{bookcode:bookcode,person:person,name:name,mobile:mobile},function(result){
 			    		if(result=="ok"){
 			    			$('#btnSearch').trigger('click');
 			    			del();
@@ -277,7 +277,7 @@
 	    $('#btnDel').click(function() {
 	    	if($('#bookcode').val() != '') {
 		    	if(confirm("예약을 취소하시겠습니까?")) {
-			    	$.post("http://localhost:8080/deleteBook",{bookcode:$('#bookcode').val()},function(result) {
+			    	$.post("/deleteBook",{bookcode:$('#bookcode').val()},function(result) {
 			    		console.log(result);
 			    		if(result=="ok"){
 			    			$('#btnSearch').trigger('click');

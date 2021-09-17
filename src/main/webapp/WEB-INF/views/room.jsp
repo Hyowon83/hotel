@@ -103,7 +103,7 @@
   <script>
     $(document).ready(function() {
     	console.log('ready');
-    	$.post("http://localhost:8080/getRoomList",{},function(result) {
+    	$.post("/getRoomList",{},function(result) {
     		console.log(result);
     		$.each(result, function(ndx, value){
     			//let li = '<option value='+value['roomcode']+'>'+value['roomname']+','+value['typename']+','+value['howmany']+','+value['howmuch']+'</option>';
@@ -144,7 +144,7 @@
 	    
 	    $('#btnDel').click(function() {
 	    	if(confirm("객실을 삭제하시겠습니까?")) {
-		    	$.post("http://localhost:8080/deleteRoom",{roomcode:$('#roomcode').val()},function(result) {
+		    	$.post("/deleteRoom",{roomcode:$('#roomcode').val()},function(result) {
 		    		console.log(result);
 		    		let rc = $('#roomcode').val();
 		    		if(result=="ok"){
@@ -168,14 +168,14 @@
 	    		return false;
 	    	}
 	    	if(roomcode == "") {
-		    	$.post("http://localhost:8080/addRoom",{roomname:roomname,roomtype:roomlist,howmany:roomguest,howmuch:roomprice},function(result){
+		    	$.post("/addRoom",{roomname:roomname,roomtype:roomlist,howmany:roomguest,howmuch:roomprice},function(result){
 		    		if(result=="ok"){
 		    			location.reload();
 		    		}
 		    	}, 'text');	    		
 	    	} else {
 	    		if(confirm("객실을 수정하시겠습니까?")) {
-		    		$.post("http://localhost:8080/updateRoom",{roomcode:roomcode,roomname:roomname,roomtype:roomlist,howmany:roomguest,howmuch:roomprice},function(result){
+		    		$.post("/updateRoom",{roomcode:roomcode,roomname:roomname,roomtype:roomlist,howmany:roomguest,howmuch:roomprice},function(result){
 			    		if(result=="ok"){
 			    			location.reload();
 			    		}
