@@ -31,7 +31,7 @@
 	</beans:bean>
 	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<beans:property name="dataSource" ref="dataSource" />
-		<beans:property name="mapperLocations" value="classpath:com/hotel/app/mapper/oracle/*.xml"></beans:property>
+		<beans:property name="mapperLocations" value="classpath:mapper/oracle/*.xml"></beans:property>
 	</beans:bean>
 	-->
 	<!-- Hsql 용 설정 -->
@@ -47,7 +47,7 @@
 	</beans:bean>
 	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<beans:property name="dataSource" ref="dataSource" />
-		<beans:property name="mapperLocations" value="classpath:com/hotel/app/mapper/mysql/*.xml"></beans:property>
+		<beans:property name="mapperLocations" value="classpath:mapper/mysql/*.xml"></beans:property>
 	</beans:bean>
 	<!-- 로컬에서 확인용 데이터관리 툴 실행
 	<beans:bean depends-on="dataSource" class="org.springframework.beans.factory.config.MethodInvokingBean">
