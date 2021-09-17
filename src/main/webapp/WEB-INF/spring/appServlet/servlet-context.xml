@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	<!-- 오라클용 설정
+	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<beans:property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+		<beans:property name="username" value="ora_user" />
+		<beans:property name="password" value="human123" />
+	</beans:bean>
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="mapperLocations" value="classpath:com/hotel/app/mapper/oracle/*.xml"></beans:property>
+	</beans:bean>
+	-->
+	<!-- Hsql 용 설정 -->
+	<jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS"> 
+		<jdbc:script location="classpath:/db_script/hsql_file.sql" /> 
+	</jdbc:initialize-database>
+	<!-- /tmp/hsql_file.db를 자동으로 생성함(폴더포함) -->
+	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+		<beans:property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+		<beans:property name="url" value="jdbc:hsqldb:file:/tmp/hsql_file.db;hsqldb.lock_file=false" />
+		<beans:property name="username" value="sa" />
+		<beans:property name="password" value="" />
+	</beans:bean>
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="mapperLocations" value="classpath:com/hotel/app/mapper/mysql/*.xml"></beans:property>
+	</beans:bean>
+	<!-- 로컬에서 확인용 데이터관리 툴 실행
+	<beans:bean depends-on="dataSource" class="org.springframework.beans.factory.config.MethodInvokingBean">
+	<beans:property name="targetClass" value="org.hsqldb.util.DatabaseManagerSwing" />
+	<beans:property name="targetMethod" value="main" />
+	<beans:property name="arguments">
+		<beans:list>
+			<beans:value>- -url</beans:value>
+			<beans:value>jdbc:hsqldb:file:c:/tmp/hsql_file.db;hsqldb.lock_file=false</beans:value>
+			<beans:value>- -user</beans:value>
+			<beans:value>sa</beans:value>
+			<beans:value>- -password</beans:value>
+			<beans:value></beans:value>
+		</beans:list>
+	</beans:property>
+	</beans:bean>
+	-->
+	
+	<beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<beans:constructor-arg index="0" ref="sqlSessionFactory" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.hotel.app" />
+	
+</beans:beans>
