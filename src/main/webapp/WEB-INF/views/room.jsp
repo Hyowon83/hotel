@@ -167,7 +167,7 @@
 	    		alert("값을 전부 입력해주세요.");
 	    		return false;
 	    	}
-	    	if($('#roomli').text() == "") {
+	    	if(roomlist == null) {
 	    		alert("객실 종류를 선택해주세요.");
 	    		return false;
 	    	}
