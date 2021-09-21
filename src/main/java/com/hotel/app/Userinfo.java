@@ -1,40 +1,40 @@
 package com.hotel.app;
 
 public class Userinfo {
-	private String username;
-	private String userid;
-	private String userpw;
+	private String name;
+	private String loginid;
+	private String passcode;
 	
 	public Userinfo() {}
-	
-	public Userinfo(String username, String userid, String userpw) {
-		this.username = username;
-		this.userid = userid;
-		this.userpw = userpw;
+
+	public Userinfo(String name, String loginid, String passcode) {
+		this.name = name;
+		this.loginid = loginid;
+		this.passcode = passcode;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getName() {
+		return name;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getUserid() {
-		return userid;
+	public String getLoginid() {
+		return loginid;
 	}
 
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setLoginid(String loginid) {
+		this.loginid = loginid;
 	}
 
-	public String getUserpw() {
-		return userpw;
+	public String getPasscode() {
+		return passcode;
 	}
 
-	public void setUserpw(String userpw) {
-		this.userpw = userpw;
+	public void setPasscode(String passcode) {
+		this.passcode = passcode;
 	}
 	
 }

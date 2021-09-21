@@ -134,7 +134,7 @@
           });
     	
 	    $('#btnClear').click(function() {
-	        $('#roomName, #roomGuest, #roomPrice, #roomcode').val('');
+	        $('#roomName, #roomGuest, #roomPrice, #roomcode, #roomli').val('');
 	        $("#roomli option").prop("selected", false);
 	        for (let i = 0; i < $("#btn_room a").length; i++) {                    
             	$("#btn_room a").removeClass("active");

@@ -41,21 +41,32 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/signin", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
-	public String doSignin(HttpServletRequest hsr) {
+	public String doSignin(HttpServletRequest hsr, Model model) {
 		//insert into member
 		iMember user = sqlSession.getMapper(iMember.class);
 		
 		String uname = hsr.getParameter("username");
 		String uid = hsr.getParameter("userid");
 		String userpw = hsr.getParameter("userpw");
+		System.out.println("이름"+uname);
+		System.out.println("아이디"+uid);
+		System.out.println("비번"+userpw);
 		
-//		System.out.println(uname);
-//		System.out.println(uid);
-//		System.out.println(userpw);
+		
+		int n = user.doCheckUserId(uid);
+		if(n > 0) {
+			model.addAttribute("msg","이미 존재하는 아이디입니다.");
+            model.addAttribute("url","/newbie");
+			System.out.println("X");
+			return "redirect";
+		} else {
+			user.doAddUser(uname, uid, userpw);
+			model.addAttribute("msg","회원가입이 완료되었습니다.");
+            model.addAttribute("url","/");
+			System.out.println("O");
+			return "redirect";
+		}
 
-		user.doAddUser(uname, uid, userpw);
-		
-		return "home";
 	}
 	
 	@RequestMapping(value="/check_user", method = RequestMethod.POST)
@@ -68,9 +79,13 @@ public class HomeController {
 		if(n > 0) {
 			HttpSession session=hsr.getSession();
 			session.setAttribute("loginid", userid);
-			return "redirect:/booking";
+			model.addAttribute("msg","로그인에 성공하셨습니다.");
+            model.addAttribute("url","/booking");
+			return "redirect";
 		} else {
-			return "redirect:/";
+			model.addAttribute("msg","아이디와 비밀번호를 다시 확인해주세요.");
+            model.addAttribute("url","/");
+			return "redirect";
 		}
 	}
 	
