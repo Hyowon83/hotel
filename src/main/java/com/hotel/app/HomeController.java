@@ -197,12 +197,20 @@ public class HomeController {
 	@ResponseBody
 	public String getBookedRoomList(HttpServletRequest hsr) {
 		iBooking book = sqlSession.getMapper(iBooking.class);
+		ArrayList<Bookinfo> bookinfo = new ArrayList<Bookinfo>();
 		
-		String typename = hsr.getParameter("typename");
 		String checkin = hsr.getParameter("checkin");
 		String checkout = hsr.getParameter("checkout");
+		String typename = hsr.getParameter("typename");
 		
-		ArrayList<Bookinfo> bookinfo = book.bookedRoomList(checkin, checkout,typename);
+		System.out.println(typename);
+		
+		if(typename.equals("all")) {
+			bookinfo = book.bookedRoomList(checkin, checkout);			
+		} else {
+			bookinfo = book.bookedRoomListType(checkin, checkout, typename);
+		}
+		
 		//찾아온 데이터로 JSONArray만들기
 		JSONArray ja = new JSONArray();
 		for(int i = 0; i < bookinfo.size(); i++) {
@@ -239,9 +247,20 @@ public class HomeController {
 	@ResponseBody
 	public String getBookList(HttpServletRequest hsr) {
 		iBooking book = sqlSession.getMapper(iBooking.class);
+		ArrayList<Bookinfo> bookinfo = new ArrayList<Bookinfo>();
+		
 		String checkin = hsr.getParameter("checkin");
 		String checkout = hsr.getParameter("checkout");
-		ArrayList<Bookinfo> bookinfo = book.getBookList(checkin, checkout);
+		String typename = hsr.getParameter("typename");
+		
+		System.out.println(typename);
+		
+		if(typename.equals("all")) {
+			bookinfo = book.getBookList(checkin, checkout);			
+		} else {
+			bookinfo = book.getBookListType(checkin, checkout, typename);	
+		}
+		
 		//찾아온 데이터로 JSONArray만들기
 		JSONArray ja = new JSONArray();
 		for(int i = 0; i < bookinfo.size(); i++) {
