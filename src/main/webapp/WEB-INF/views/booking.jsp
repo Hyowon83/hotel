@@ -63,7 +63,7 @@
                     </div>
                     <label for="roomli" style="float:left">객실 종류</label>
                     <select class="form-select" size="1" id="roomli">
-                        <option value="-">-전체-</option>
+                        <option value="0">-전체-</option>
                         <c:forEach items = "${type}" var = "rtype">
 				  			<option value="${rtype.typecode}">${rtype.name}</option>
 						</c:forEach>
@@ -183,8 +183,14 @@
     		
 			let checkin = $("#searchIn").val();
 			let checkout = $("#searchOut").val();
-			let typename = $("#roomli option:selected").text();
-
+			let typename = $("#roomli option:selected").val();
+			
+			if($("#roomli option:selected").val() == 0) {
+				typename = "all";
+			} else {
+				typename = $("#roomli option:selected").text();
+			}
+			
     		if(checkin == "" || checkout == ""){
     			alert("날짜를 선택해주세요.");
     			return false;
@@ -195,7 +201,7 @@
     			return false;
     		} else {
     			
-    			$.post("/getBookList",{checkin:checkin,checkout:checkout},function(result) {
+    			$.post("http://localhost:8080/getBookList",{checkin:checkin,checkout:checkout,typename:typename},function(result) {
     	    		console.log(checkin, checkout);
    	    			$('#btn_book *').remove();
     	    		$.each(result, function(ndx, value){
@@ -214,7 +220,7 @@
     	    		});
     	    	},'json')
     	    	
-    	    	$.post("/bookedRoomList",{checkin:checkin,checkout:checkout,typename:typename},function(result) {
+    	    	$.post("http://localhost:8080/bookedRoomList",{checkin:checkin,checkout:checkout,typename:typename},function(result) {
     	    		console.log(checkin, checkout);
    	    			$('#booked *').remove();
    	    			$("#resultBooked").css("display", "block");
@@ -255,7 +261,7 @@
 	    		return false;
 	    	}
 	    	if(bookcode == "") {
-		    	$.post("/addBook",{roomcode:roomcode,person:person,checkin:checkin,checkout:checkout,name:name,mobile:mobile},function(result){
+		    	$.post("http://localhost:8080/addBook",{roomcode:roomcode,person:person,checkin:checkin,checkout:checkout,name:name,mobile:mobile},function(result){
 		    		if(result=="ok"){
 		    			$('#btnSearch').trigger('click');
 		    			del();
@@ -263,7 +269,7 @@
 		    	}, 'text');	    		
 	    	} else {
 	    		if(confirm("예약을 수정하시겠습니까?")) {
-		    		$.post("/updateBook",{bookcode:bookcode,person:person,name:name,mobile:mobile},function(result){
+		    		$.post("http://localhost:8080/updateBook",{bookcode:bookcode,person:person,name:name,mobile:mobile},function(result){
 			    		if(result=="ok"){
 			    			$('#btnSearch').trigger('click');
 			    			del();
