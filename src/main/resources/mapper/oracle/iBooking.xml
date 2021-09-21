@@ -5,7 +5,7 @@
 
 <mapper namespace="com.hotel.app.iBooking">
 	
-	<!-- 예약가능한 객실 -->
+	<!-- 예약가능한 객실 전체 -->
 	<select id = "getBookList" resultType="com.hotel.app.Bookinfo">
 		SELECT DISTINCT A.ROOMCODE, A.NAME ROOMNAME, B.NAME TYPENAME, A.HOWMANY, A.HOWMUCH
 		FROM ROOM A INNER JOIN ROOMTYPE B ON A.TYPE = B.TYPECODE
@@ -14,12 +14,27 @@
 		SELECT DISTINCT ROOMCODE FROM BOOKING
 		<![CDATA[WHERE CHECKIN < #{param2} AND CHECKOUT > #{param1})]]> ORDER BY A.ROOMCODE
 	</select>
+	<!-- 예약가능한 객실 타입설정 -->
+	<select id = "getBookListType" resultType="com.hotel.app.Bookinfo">
+		SELECT DISTINCT A.ROOMCODE, A.NAME ROOMNAME, B.NAME TYPENAME, A.HOWMANY, A.HOWMUCH
+		FROM ROOM A INNER JOIN ROOMTYPE B ON A.TYPE = B.TYPECODE
+		WHERE A.ROOMCODE IN
+		(SELECT ROOMCODE FROM ROOM MINUS
+		SELECT DISTINCT ROOMCODE FROM BOOKING
+		<![CDATA[WHERE CHECKIN < #{param2} AND CHECKOUT > #{param1})]]> AND B.NAME = #{param3} ORDER BY A.ROOMCODE
+	</select>
 	
-	<!-- 이미 예약된 객실 -->
+	<!-- 이미 예약된 객실 전체 -->
 	<select id = "bookedRoomList" resultType="com.hotel.app.Bookinfo">
 		SELECT A.ROOMCODE, A.NAME ROOMNAME, B.NAME TYPENAME, A.HOWMANY, A.HOWMUCH, C.CHECKIN, C.CHECKOUT, C.BOOKCODE, C.MOBILE, C.NAME, C.PERSON
 		FROM ROOM A INNER JOIN ROOMTYPE B ON A.TYPE = B.TYPECODE LEFT JOIN BOOKING C ON A.ROOMCODE = C.ROOMCODE
-		<![CDATA[WHERE ((B.NAME != #{param3} AND C.CHECKIN < #{param2} AND C.CHECKOUT > #{param1}) OR (B.NAME = #{param3} AND C.CHECKIN < #{param2} AND C.CHECKOUT > #{param1}))]]> ORDER BY C.CHECKIN
+		<![CDATA[WHERE C.CHECKIN < #{param2} AND C.CHECKOUT > #{param1}]]> ORDER BY C.CHECKIN
+	</select>
+	<!-- 이미 예약된 객실 타입설정 -->
+	<select id = "bookedRoomListType" resultType="com.hotel.app.Bookinfo">
+		SELECT A.ROOMCODE, A.NAME ROOMNAME, B.NAME TYPENAME, A.HOWMANY, A.HOWMUCH, C.CHECKIN, C.CHECKOUT, C.BOOKCODE, C.MOBILE, C.NAME, C.PERSON
+		FROM ROOM A INNER JOIN ROOMTYPE B ON A.TYPE = B.TYPECODE LEFT JOIN BOOKING C ON A.ROOMCODE = C.ROOMCODE
+		<![CDATA[WHERE C.CHECKIN < #{param2} AND C.CHECKOUT > #{param1} AND B.NAME = #{param3}]]> ORDER BY C.CHECKIN
 	</select>
 	
 	<delete id = "doDeleteBook">
