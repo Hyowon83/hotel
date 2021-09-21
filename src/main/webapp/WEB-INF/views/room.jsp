@@ -167,6 +167,10 @@
 	    		alert("값을 전부 입력해주세요.");
 	    		return false;
 	    	}
+	    	if($('#roomli').text() == "") {
+	    		alert("객실 종류를 선택해주세요.");
+	    		return false;
+	    	}
 	    	if(roomcode == "") {
 		    	$.post("/addRoom",{roomname:roomname,roomtype:roomlist,howmany:roomguest,howmuch:roomprice},function(result){
 		    		if(result=="ok"){
