@@ -260,6 +260,14 @@
 	    		alert("값을 전부 입력해주세요.");
 	    		return false;
 	    	}
+	    	if($('#roomGuest').val() > $('#roomGuest').attr('max') || $('#roomGuest').val().length >= 2) {
+	    		alert("숙박가능한 인원을 초과하였습니다.");
+	    		return false;
+	    	}
+	    	if(mobile.length > 11) {
+	    		alert("모바일 번호를 다시 확인해주세요.");
+	    		return false;
+	    	}
 	    	if(bookcode == "") {
 		    	$.post("/addBook",{roomcode:roomcode,person:person,checkin:checkin,checkout:checkout,name:name,mobile:mobile},function(result){
 		    		if(result=="ok"){
